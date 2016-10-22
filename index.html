@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>A new presentation begins!</title>
+    <meta charset='utf-8'>
+    <script src='/static/slides.js'></script>
+    <link rel="stylesheet" type="text/css" href="/static/codemirror.css">
+  </head>
+
+  <body>
+    <section class='slides layout-widescreen'>
+
+      <article>
+        <h1>What's going on</h1>
+
+        <div class='presenter'>
+          <p>Matt Stevens - Location & Date</p>
+        </div>
+
+        <div class='presenter'>
+          <p>mattgstevens</p>
+        </div>
+      </article>
+
+      <article>
+        <div class='code-block'>
+          <div class='language-klipse-eval-js'>
+            const hello = (name) => `Mic check 1 2 3 ${name}`;
+            hello('mattgstevens');
+          </div>
+        </div>
+      </article>
+
+      <div id='help'>
+        Use the left and right arrow keys or click the left and right
+        edges of the page to navigate between slides.<br>
+        (Press 'H' or navigate to hide this message.)
+      </div>
+    </section>
+
+    <script>
+      window.klipse_settings = {
+        selector_eval_js: '.language-klipse-eval-js', // css selector for the html elements you want to klipsify
+        eval_idle_msec: 200,
+        codemirror_options_in: {
+          indentUnit: 4,
+          lineWrapping: true,
+          lineNumbers: true,
+          autoCloseBrackets: true,
+        },
+        codemirror_options_out: {
+          lineWrapping: true,
+          lineNumbers: true,
+        }
+      };
+    </script>
+    <script src='/static/klipse.js'></script>
+  </body>
+</html>
