@@ -434,7 +434,12 @@ function handleBodyKeyDown(event) {
   }
 };
 
-function addEventListeners() {
+function stopKeydownEvent (element) {
+  element.addEventListener('keydown', function(event) { event.stopPropagation(); }, false);
+}
+
+function addEventListeners(types) {
+  types.code.forEach(stopKeydownEvent);
   document.addEventListener('keydown', handleBodyKeyDown, false);
 };
 
@@ -475,7 +480,7 @@ function handleDomLoaded() {
 
   addFontStyle();
   addGeneralStyle();
-  addEventListeners();
+  addEventListeners({ code: document.querySelectorAll('.code-block') });
 
   updateSlides();
 
