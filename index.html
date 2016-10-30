@@ -1,39 +1,214 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>A new presentation begins!</title>
+    <title>BCG DV - interview</title>
     <meta charset='utf-8'>
     <script src='/static/slides.js'></script>
-    <link rel="stylesheet" type="text/css" href="/static/codemirror.css">
+    <link rel='stylesheet' type='text/css' href='/static/codemirror.css'>
   </head>
 
   <body>
     <section class='slides layout-widescreen'>
 
       <article>
-        <h1>What's going on</h1>
+        <h1>BCG Digital Ventures</h1>
+
+        <h2>Momona - Bitcoin gateway for content</h2>
 
         <div class='presenter'>
-          <p>Matt Stevens - Location & Date</p>
+          <p>Matt Stevens - 25.10.2016</p>
         </div>
 
         <div class='presenter'>
-          <p>mattgstevens</p>
+          <p>mattgstevens @ github | twitter | .com </p>
         </div>
       </article>
 
       <article>
-        <div class='code-block'>
-          <div class='language-klipse-eval-js'>
-            const hello = (name) => `Mic check 1 2 3 ${name}`;
-            hello('mattgstevens');
-          </div>
+        <h3>Online payments are largely centered around subscription model</h3>
+        <p>This makes much sense for services, but what about access to content?</p>
+      </article>
+
+      <article>
+        <div class='background'>
+          <image src='/static/images/wired-ad-blocker.png' alt='wired-ad-blocker'/>
         </div>
+      </article>
+
+      <article>
+        <h3>When in doubt of monetization, put up some advertising</h3>
+        <ul>
+          <li>Public awareness of information sharing via ad networks is rising</li>
+          <li>Browser add-ons for Chrome and Firefox to block third party scripts</li>
+          <li>Browsers that are purpose built to block trackers / be anonymous</li>
+          <li>Frustration of being interrupted to watch an ad</li>
+        </ul>
+      </article>
+
+      <article>
+        <h1>Momona</h1>
+        <h3>A scheme for payment to content creators.</h3>
+      </article>
+
+      <article>
+        <ul>
+          <li>Read online articles</li>
+          <li>Access to whitepapers and other scientific journals</li>
+          <li>Plug-in to CMS's</li>
+        </ul>
+        <h2>Not just for media companies</h2>
+      </article>
+
+      <article>
+        <ul>
+          <li>Pay per view for screen casts and tutorial</li>
+          <li>Once a threshold of total payments is reached content is unlocked</li>
+          <li>Donations and tips for a website</li>
+        </ul>
+        <h2>Individuals can be supported by their audience</h2>
+      </article>
+
+      <article>
+        <h3>Why Bitcoin?</h3>
+        <p>Transaction fees are much smaller than credit cards</p>
+        <p>Transaction appears instantly on the blockchain</p>
+        <p>Immediate registration for creators: give a valid public address and you are done</p>
+        <p>Fast payments from viewer: receive a bitcoin URI that will open in a wallet app</p>
+      </article>
+
+      <article>
+        <h3>Key points about Bitcoin</h3>
+        <ul>
+          <li>Bitcoin wallets contain keypairs, not coins</li>
+          <li>Public and private key pairs</li>
+          <li>Public key is the payable address</li>
+          <li>Private key is used to sign transactions that spend funds from the address</li>
+          <li>When sending a transaction, all value from the address must be sent (so called unspent transaction outputs or UXTO)</li>
+          <li>Coins are stored on the blockhain in the form of transaction-outputs</li>
+        </ul>
+      </article>
+
+      <article>
+        <a href='/static/images/Momona-demo-video-payment.gif'>
+          <h1>DEMO</h1>
+        </a>
+        <!-- <div class='background'> -->
+          <!-- <image src='/static/images/Momona-demo-video-payment.gif' alt='Momona - demo video payment'/> -->
+        <!-- </div> -->
+      </article>
+
+      <article>
+        <h1>Core idea: bitcoin address as access token</h1>
+      </article>
+
+      <article>
+        <h3>Tech used:</h3>
+        <ul>
+          <li>Javascript client</li>
+          <li>Node.js API</li>
+          <li>Redis for data persistence</li>
+          <li>Digital Ocean for hosting</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Models - Content</h3>
+        <code>
+        properties: Object.freeze({,<br />
+        &nbsp;content: validates.errorsInString,<br />
+        &nbsp;contentId: validates.errorsInContentId,<br />
+        &nbsp;currency: validates.errorsInCurrency,<br />
+        &nbsp;label: validates.errorsInLabel,<br />
+        &nbsp;payoutAddress: validates.errorsInBitcoinAddress,<br />
+        &nbsp;price: validates.errorsInInteger<br />
+        }),<br />
+        </code>
+      </article>
+
+      <article>
+        <h3>Models - Invoice</h3>
+        <code>
+        properties: Object.freeze({<br />
+        &nbsp;createdAt: validates.errorsInJavascriptTimestamp,<br />
+        &nbsp;address: validates.errorsInBitcoinAddress,<br />
+        &nbsp;contentId: validates.errorsInContentId,<br />
+        &nbsp;privateKey: validates.errorsInBitcoinPrivateKey,<br />
+        &nbsp;paymentTimestamp: validates.optional(<br />
+        &nbsp;&nbsp;validates.errorsInJavascriptTimestamp<br />
+        &nbsp;),<br />
+        }),<br />
+        </code>
+      </article>
+
+      <article>
+        <h3>Api Server - Very simple interface</h3>
+        <p><code>POST /content/v0</code></p>
+        <code>
+          {<br />
+            &nbsp;contentId: 2016-is-the-year-for-crypto,<br />
+            &nbsp;content: "Blockchain technique",<br />
+            &nbsp;price: 10000,<br />
+            &nbsp;currency: satoshi,<br />
+            &nbsp;payoutAddress: "19qwUC4AgoqpPFHfyZ5tBD279WLsMAnUBw",<br />
+          }<br />
+        </code>
+      </article>
+
+      <article>
+        <h3>Api Server - Very simple interface</h3>
+        <p><code>GET /0/content/2016-is-the-year-for-crypto</code></p>
+        <code>
+          {<br />
+            &nbsp;address: "16EJ3g2JbjiDa53QUq1zzNU6yg8mwi7NHe",<br />
+            &nbsp;label: Bitcoin Media,<br />
+            &nbsp;satoshis: 10000,<br />
+          }<br />
+        </code>
+      </article>
+
+      <article>
+        <h3>Api Server - Very simple interface</h3>
+        <p><code>GET /0/content/2016-is-the-year-for-crypto?address="16EJ3g2JbjiDa53QUq1zzNU6yg8mwi7NHe"</code></p>
+        <code>
+          {<br />
+            &nbsp;content: "Blockchain techniques",<br />
+          }<br />
+        </code>
+      </article>
+
+      <article>
+        <h3>Web Client</h3>
+        <ul>
+          <li>Small footprint, is configured with a contentId</li>
+          <li>Stores the Invoice bitcoin address for future access</li>
+          <li>Returned content is rendered into page: string payload for content; with CORS permissions the web client can render video / images</li>
+        </ul>
+      </article>
+
+      <article>
+        <div class='background'>
+          <image src='/static/images/blockchain-graveyard.png' alt='blockchain-graveyard'/>
+        </div>
+      </article>
+
+      <article>
+        <h3>Lessons Learned</h3>
+        <ul>
+          <li>Need secure transactions service: a protected server that has private keys to sign transactions</li>
+          <li>How to keep secrets safe: multi-signature which is an M of N scheme (aka Shamirs Shared Secrets) to sign transactions and grant access to sensitive commands</li>
+          <li>Hierarchical Deterministic Wallets: a seed is used to create first level of tree structure; parent keys can derive children, possible to derive public keys for receive only services</li>
+          <li>Additionally, HD wallets can represent an organizations departments or accounting category</li>
+        </ul>
+      </article>
+
+      <article>
+        <h1>Thanks!</h1>
+        <h2>Questions / comments?</h2>
       </article>
 
       <div id='help'>
         Use the left and right arrow keys or click the left and right
-        edges of the page to navigate between slides.<br>
+        edges of the page to navigate between slides.<br />
         (Press 'H' or navigate to hide this message.)
       </div>
     </section>
@@ -45,12 +220,10 @@
         codemirror_options_in: {
           indentUnit: 4,
           lineWrapping: true,
-          lineNumbers: true,
           autoCloseBrackets: true,
         },
         codemirror_options_out: {
           lineWrapping: true,
-          lineNumbers: true,
         }
       };
     </script>
